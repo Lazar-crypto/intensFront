@@ -1,3 +1,144 @@
-<div *ngFor="let candidate of candidates">
-    <dir>{{candidate.name}}</dir>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="color:white;">Candidate Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+       <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+             <a class="nav-link" (click)="openModal(null, 'add')" style="cursor: pointer">Add Candidate <span class="sr-only" >(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" (click)="openModal(null, 'add')" style="cursor: pointer">Add Skills <span class="sr-only">(current)</span></a>
+         </li>
+       </ul>
+       <form class="form-inline my-2 my-lg-0">
+          <!-- <input type="search" (ngModelChange)="searchEmployees(key.value)" #key="ngModel" ngModel
+           name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search employees..." required> -->
+           <input type="search" name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search by skill ">
+       </form>
+    </div>
+  </nav>
+
+<div class="container" id="main-container">
+    <div class="row">
+        <div *ngFor="let candidate of candidates" class="col-md-6 col-xl-3">
+            <div class="card m-b-30">
+                <div class="card-body row">
+                    <div class="col-6">
+                        <a href=""><img src="{{candidate?.imgUrl}}" alt="" class="img-fluid rounded-circle w-60"></a>
+                    </div>
+                    <div class="col-6 card-title align-self-center mb-0">
+                        <h6>{{candidate.name}}</h6>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <a href="#">{{candidate.email}}</a></li>
+                    <li class="list-group-item"><i class="fa fa-phone float-right"></i>{{candidate.contactNumber}}</li>
+                </ul>
+                <div class="card-body">
+                    <ul class="list-inline m-0">
+                        <li class="list-inline-item">
+                            <button (click)="openModal(candidate,'edit')"  class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                        </li>
+                        <li class="list-inline-item">
+                            <button (click)="openModal(candidate,'delete')" class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Add Candidate Modal -->
+<div class="modal fade" id="addCandidateModal" tabindex="-1" role="dialog" aria-labelledby="addCandidateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="addCandidateModalLabel">Add Candidate</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form> <!--  #addForm="ngForm" (ngSubmit)="onAddEmloyee(addForm)" -->
+            <div class="form-group">
+               <label for="name">Name</label>
+               <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Full name" required>
+            </div>
+            <div class="form-group">
+               <label for="email">Date of birth</label>
+               <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Date of birth" required>
+            </div>
+            <div class="form-group">
+               <label for="phone">Phone</label>
+               <input type="text" ngModel name="jobTitle" class="form-control" id="jobTile" placeholder="Contact number" required>
+            </div>
+            <div class="form-group">
+               <label for="phone">Email</label>
+               <input type="text" ngModel name="phone" class="form-control" id="phone" placeholder="Email Address" required>
+            </div>
+            <div class="form-group">
+               <label for="phone">Skills</label>
+               <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="At least one skill" required>
+            </div>
+            <div class="modal-footer">
+               <button type="button" id="add-candidate-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary" >Save changes</button> <!-- [disabled]="addForm.invalid"-->
+            </div>
+            </form>
+         </div>
+      </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editCandidateModal" tabindex="-1" role="dialog" aria-labelledby="editCandidateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="editCandidateModalLabel">Update Candidate <!-- {{editEmployee?.name}} --> with new skill</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <form > <!-- #editForm="ngForm" -->
+                <div class="form-group">
+                   <label for="name">Skill</label>
+                   <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name of the skill"> <!-- ngModel="{{editEmployee?.name}}"  -->
+                </div>
+                <div class="modal-footer">
+                   <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                   <button  data-dismiss="modal" class="btn btn-primary" >Save changes</button> <!-- (click)="onUpdateEmloyee(editForm.value)" -->
+                </div>
+             </form>
+          </div>
+       </div>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+<div class="modal fade" id="deleteCandidateModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="deleteModelLabel">Delete Candidate</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <p>Are you sure you want to delete candidate <!-- {{deleteEmployee?.name}} -->?</p>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button class="btn btn-danger" data-dismiss="modal">Yes</button> <!-- (click)="onDeleteEmloyee(deleteEmployee?.id)" -->
+             </div>
+          </div>
+       </div>
+    </div>
+</div>
+  

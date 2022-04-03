@@ -12,13 +12,11 @@ import { CustomHttpResponse } from './model/custom-http-response';
 export class AppComponent implements OnInit {
   
   public candidates!: Candidate[];
-  public pera!: string;
   
   constructor(private candidateService: CandidateService){}
 
   ngOnInit(): void {
     this.getCandidates()
-    this.pera = "Pera zdera"
   }
 
   public getCandidates(): void{
@@ -31,11 +29,41 @@ export class AppComponent implements OnInit {
         objectValue.forEach(value => this.candidates = value)
         /* console.log(this.candidates)
         this.candidates.forEach(candidate=>console.log(candidate.name)) */
+        
+        let num = 1;
+        for(let i = 0; i < this.candidates.length;i++){
+          this.candidates[i].imgUrl = `https://bootdey.com/img/Content/avatar/avatar${num}.png`
+          num++
+        }
+      
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
       }
     )
+  }
+
+  public openModal(candidate: Candidate,mode: string): void{
+    const btn = document.createElement('button')
+    const container = document.querySelector('#main-container')
+
+    btn.type = 'button'
+    btn.style.display = 'none'
+    btn.setAttribute('data-toggle','modal')
+
+    //check what btn is clicked
+    if(mode == 'add'){
+      btn.setAttribute('data-target','#addCandidateModal')
+    }
+    if(mode == 'edit'){
+      btn.setAttribute('data-target','#editCandidateModal')
+    }
+    if(mode == 'delete'){
+      btn.setAttribute('data-target','#deleteCandidateModal')
+    }
+
+    container?.appendChild(btn)
+    btn.click()
   }
 
 }
