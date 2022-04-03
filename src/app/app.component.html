@@ -1,7 +1,7 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" style="color:white;">Candidate Manager</a>
+    <a class="navbar-brand" style="color:white;">Job candidates manager</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
     </button>
@@ -32,6 +32,8 @@
                     </div>
                     <div class="col-6 card-title align-self-center mb-0">
                         <h6>{{candidate.name}}</h6>
+                        <p class="m-0">{{candidate?.dateOfBirth}}</p>
+                        <button data-dismiss="modal" class="btn btn-primary" >Skills</button>
                     </div>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -95,25 +97,39 @@
     </div>
 </div>
 
-<!-- Edit Modal -->
+<!-- Update candidate with skill Modal -->
 <div class="modal fade" id="editCandidateModal" tabindex="-1" role="dialog" aria-labelledby="editCandidateModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
        <div class="modal-content">
           <div class="modal-header">
-             <h5 class="modal-title" id="editCandidateModalLabel">Update Candidate <!-- {{editEmployee?.name}} --> with new skill</h5>
+             <h5 class="modal-title" id="editCandidateModalLabel">Update {{updateCandidate?.name}} with new skill</h5>
              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
              <span aria-hidden="true">&times;</span>
              </button>
           </div>
           <div class="modal-body">
-             <form > <!-- #editForm="ngForm" -->
+             <form #editForm="ngForm">
                 <div class="form-group">
-                   <label for="name">Skill</label>
-                   <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name of the skill"> <!-- ngModel="{{editEmployee?.name}}"  -->
+                    <input type="hidden" ngModel="{{updateCandidate?.name}}" name="name" class="form-control" id="name" placeholder="Full name" required>
+                 </div>
+                 <div class="form-group">
+                    <input type="hidden" ngModel="{{updateCandidate?.dateOfBirth}}" name="dateOfBirth" class="form-control" id="dateOfBirth" placeholder="dd-MM-yyyy" required>
+                 </div>
+                 <div class="form-group">
+                    <input type="hidden" ngModel="{{updateCandidate?.contactNumber}}" name="contactNumber" class="form-control" id="jobTile" placeholder="Contact number" required>
+                 </div>
+                 <div class="form-group">
+                    <input type="hidden" ngModel="{{updateCandidate?.email}}" name="email" class="form-control" id="email" placeholder="Email Address" required>
+                 </div>
+                 <div class="form-group">
+                    <input type="hidden" ngModel="{{updateCandidate?.skills}}" name="skills" class="form-control" id="email" placeholder="Email Address" required>
+                 </div>
+                <div class="form-group">
+                   <input type="text" ngModel name="newSKill" class="form-control" id="newSKill" aria-describedby="emailHelp" placeholder="Name of the skill"> <!-- ngModel="{{editEmployee?.name}}"  -->
                 </div>
                 <div class="modal-footer">
                    <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
-                   <button  data-dismiss="modal" class="btn btn-primary" >Save changes</button> <!-- (click)="onUpdateEmloyee(editForm.value)" -->
+                   <button (click)="updateCandidateWithSkill(editForm)" data-dismiss="modal" class="btn btn-primary" >Save changes</button> 
                 </div>
              </form>
           </div>

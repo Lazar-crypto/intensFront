@@ -21,19 +21,19 @@ export class CandidateService {
   }
 
   public addCandidate(candidate: Candidate): Observable<CustomHttpResponse>{
-    console.log(candidate)
     return this.http.post<CustomHttpResponse>(`${this.apiServerUrl}/addCandidate`,candidate)
   }
 
+  public updateCandidateSkill(wrapper: RequestWrapper): Observable<CustomHttpResponse>{
+    return this.http.put<CustomHttpResponse>(`${this.apiServerUrl}/updateCandidateSkill`,wrapper)
+  }
 
   /*
   public addSkills(skills: Skill[]): Observable<Skill[]>{
     return this.http.post<Skill[]>(`${this.apiServerUrl}/addSkills`,skills)
   }
 
-  public updateCandidateSkill(wrapper: RequestWrapper): Observable<RequestWrapper>{
-    return this.http.put<RequestWrapper>(`${this.apiServerUrl}/updateCandidateSkill`,wrapper)
-  }
+  
 
   public removeSKillFromCandidate(wrapper: RequestWrapper): Observable<RequestWrapper>{
     return this.http.put<RequestWrapper>(`${this.apiServerUrl}/removeSkillFromCandidate`,wrapper)

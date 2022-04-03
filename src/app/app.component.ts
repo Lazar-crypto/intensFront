@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { CandidateService } from './candidate.service';
 import { Candidate } from './model/candidate';
 import { CustomHttpResponse } from './model/custom-http-response';
+import { RequestWrapper } from './model/requestWrapper';
 import { Skill } from './model/skill';
 
 @Component({
@@ -14,6 +15,7 @@ import { Skill } from './model/skill';
 export class AppComponent implements OnInit {
   
   public candidates!: Candidate[];
+  public updateCandidate!: Candidate;
   
   constructor(private candidateService: CandidateService){}
 
@@ -22,15 +24,12 @@ export class AppComponent implements OnInit {
   }
 
   public getCandidates(): void{
-    
     this.candidateService.getCandidates().subscribe(
       (response: CustomHttpResponse) =>{
 
         const map = response.data
         const objectValue = Object.values(map)
         objectValue.forEach(value => this.candidates = value)
-        /* console.log(this.candidates)
-        this.candidates.forEach(candidate=>console.log(candidate.name)) */
         
         let num = 1;
         for(let i = 0; i < this.candidates.length;i++){
@@ -39,7 +38,6 @@ export class AppComponent implements OnInit {
           if(num == 9)
             num = 1
         }
-      
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
@@ -48,7 +46,6 @@ export class AppComponent implements OnInit {
   }
 
   public addCandidate(addForm: NgForm): void{
-    
     let btnClose = document.querySelector('#add-candidate-form') as HTMLElement
     btnClose.click()
 
@@ -56,24 +53,52 @@ export class AppComponent implements OnInit {
       console.log(typeof jsonObj)
       const skillsArray:Array<any> = jsonObj.skills.split(',')
       let skillsArrayObj = []
-      let skill = {} as Skill
 
       for(let i = 0; i < skillsArray.length; i++){
+        let skill = {} as Skill
         skill.name = skillsArray[i]
+        console.log(skill.name)
         skillsArrayObj.push(skill)
       }
       jsonObj.skills = skillsArrayObj
+      console.log(skillsArrayObj)
       addForm.setValue(jsonObj)
+
+      console.log('ADD METHOD')
+      console.log(addForm.value)
       
      this.candidateService.addCandidate(addForm.value).subscribe(
       (response: CustomHttpResponse) =>{
         this.getCandidates()
-        //addForm.setValue = {}
+        console.log(response)
+        addForm.reset()
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+        addForm.reset()
+      }
+    ) 
+  }
+
+  public updateCandidateWithSkill(updateForm: NgForm): void{
+    let newSkill = {} as Skill
+    newSkill.name = updateForm.value.newSKill
+    
+    let wrapper = {} as RequestWrapper
+    wrapper.candidate = this.updateCandidate
+    wrapper.skill = newSkill
+
+    this.candidateService.updateCandidateSkill(wrapper).subscribe(
+      (response: CustomHttpResponse) =>{
+        this.getCandidates()
+        console.log(response)
+        if(response.statusCode == 400)
+          alert(response.msg)
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
       }
-    ) 
+    )
   }
 
 
@@ -90,6 +115,7 @@ export class AppComponent implements OnInit {
       btn.setAttribute('data-target','#addCandidateModal')
     }
     if(mode == 'edit'){
+      this.updateCandidate = candidate
       btn.setAttribute('data-target','#editCandidateModal')
     }
     if(mode == 'delete'){
