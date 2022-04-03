@@ -1,4 +1,4 @@
 export interface Skill{
-    id:number
+    id: Partial<number> 
     name:string
 }

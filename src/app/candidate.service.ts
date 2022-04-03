@@ -20,10 +20,13 @@ export class CandidateService {
     return this.http.get<CustomHttpResponse>(`${this.apiServerUrl}/all`)
   }
 
-  /* public addCandidate(candidate: Candidate): Observable<Candidate>{
-    return this.http.post<Candidate>(`${this.apiServerUrl}/addCandidate`,candidate)
+  public addCandidate(candidate: Candidate): Observable<CustomHttpResponse>{
+    console.log(candidate)
+    return this.http.post<CustomHttpResponse>(`${this.apiServerUrl}/addCandidate`,candidate)
   }
 
+
+  /*
   public addSkills(skills: Skill[]): Observable<Skill[]>{
     return this.http.post<Skill[]>(`${this.apiServerUrl}/addSkills`,skills)
   }
