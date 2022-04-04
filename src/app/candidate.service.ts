@@ -28,6 +28,10 @@ export class CandidateService {
     return this.http.put<CustomHttpResponse>(`${this.apiServerUrl}/updateCandidateSkill`,wrapper)
   }
 
+  public removeCandidate(id: number): Observable<CustomHttpResponse>{
+    return this.http.delete<CustomHttpResponse>(`${this.apiServerUrl}/removeCandidate/${id}`)
+  }
+
   /*
   public addSkills(skills: Skill[]): Observable<Skill[]>{
     return this.http.post<Skill[]>(`${this.apiServerUrl}/addSkills`,skills)
@@ -39,7 +43,7 @@ export class CandidateService {
     return this.http.put<RequestWrapper>(`${this.apiServerUrl}/removeSkillFromCandidate`,wrapper)
   }
 
-  public removeCandidate(id: number): Observable<void> */
+   */
  
 
 }

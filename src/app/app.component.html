@@ -148,10 +148,10 @@
              </button>
           </div>
           <div class="modal-body">
-             <p>Are you sure you want to delete candidate <!-- {{deleteEmployee?.name}} -->?</p>
+             <p>Are you sure you want to delete candidate {{deletedCandidate?.name}}?</p>
              <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <button class="btn btn-danger" data-dismiss="modal">Yes</button> <!-- (click)="onDeleteEmloyee(deleteEmployee?.id)" -->
+                <button (click)="deleteCandidate(deletedCandidate.id)" class="btn btn-danger" data-dismiss="modal">Yes</button> <!-- (click)="onDeleteEmloyee(deleteEmployee?.id)" -->
              </div>
           </div>
        </div>
@@ -183,4 +183,11 @@
        </div>
     </div>
   </div>
+
+  <div *ngIf="candidates?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+    <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading">NO CANDIDATES!</h4>
+      <p>No Candidates were found.</p>
+    </div>
+    </div>
   

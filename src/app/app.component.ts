@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   
   public candidates!: Candidate[];
   public updateCandidate!: Candidate;
+  public deletedCandidate!: Candidate;
   
   constructor(private candidateService: CandidateService){}
 
@@ -92,6 +93,22 @@ export class AppComponent implements OnInit {
       (response: CustomHttpResponse) =>{
         this.getCandidates()
         console.log(response)
+        updateForm.reset()
+        
+        if(response.statusCode == 400)
+          alert(response.msg)
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    )
+  }
+
+  public deleteCandidate(candidateId: number): void{
+    this.candidateService.removeCandidate(candidateId).subscribe(
+      (response: CustomHttpResponse) =>{
+        this.getCandidates()
+        console.log(response)
         if(response.statusCode == 400)
           alert(response.msg)
       },
@@ -119,10 +136,15 @@ export class AppComponent implements OnInit {
       btn.setAttribute('data-target','#editCandidateModal')
     }
     if(mode == 'delete'){
+      this.deletedCandidate = candidate
       btn.setAttribute('data-target','#deleteCandidateModal')
     }
     if(mode == 'addSkills'){
       btn.setAttribute('data-target','#addSkillsModal')
+    }
+    if(mode == 'showSkills'){
+      this.updateCandidate = candidate
+      btn.setAttribute('data-target','#showSkillsModal')
     }
 
     container?.appendChild(btn)
