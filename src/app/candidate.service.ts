@@ -32,18 +32,9 @@ export class CandidateService {
     return this.http.delete<CustomHttpResponse>(`${this.apiServerUrl}/removeCandidate/${id}`)
   }
 
-  /*
-  public addSkills(skills: Skill[]): Observable<Skill[]>{
-    return this.http.post<Skill[]>(`${this.apiServerUrl}/addSkills`,skills)
+  public removeSKillFromCandidate(wrapper: RequestWrapper): Observable<CustomHttpResponse>{
+    return this.http.put<CustomHttpResponse>(`${this.apiServerUrl}/removeSkillFromCandidate`,wrapper)
   }
-
-  
-
-  public removeSKillFromCandidate(wrapper: RequestWrapper): Observable<RequestWrapper>{
-    return this.http.put<RequestWrapper>(`${this.apiServerUrl}/removeSkillFromCandidate`,wrapper)
-  }
-
-   */
  
 
 }

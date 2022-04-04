@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   public candidates!: Candidate[];
   public updateCandidate!: Candidate;
   public deletedCandidate!: Candidate;
+  public candidateSkills!: Array<Skill>;
   
   constructor(private candidateService: CandidateService){}
 
@@ -118,6 +119,30 @@ export class AppComponent implements OnInit {
     )
   }
 
+  public removeSkill(skill:Skill):void{
+    let btnClose = document.querySelector('#close-btn-show-candidates-modal') as HTMLElement
+    console.log(btnClose)
+    btnClose.click()
+    
+    let wrapper = {} as RequestWrapper
+    wrapper.candidate = this.updateCandidate
+    wrapper.skill = skill
+
+    this.candidateService.removeSKillFromCandidate(wrapper).subscribe(
+      (response: CustomHttpResponse) =>{
+        this.getCandidates()
+        console.log(response)
+        if(response.statusCode == 400)
+          alert(response.msg)
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    )
+
+    
+  }
+
   public searchCandidate(searchKey: string): void{
     const foundCandidates: Candidate[] = [];
     for(const candidate of this.candidates){
@@ -157,7 +182,8 @@ export class AppComponent implements OnInit {
     }
     if(mode == 'showSkills'){
       this.updateCandidate = candidate
-      btn.setAttribute('data-target','#showSkillsModal')
+      this.candidateSkills = this.updateCandidate.skills
+      btn.setAttribute('data-target','#showCandidateSkillsModal')
     }
 
     container?.appendChild(btn)
