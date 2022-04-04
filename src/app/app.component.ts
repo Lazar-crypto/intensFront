@@ -118,6 +118,19 @@ export class AppComponent implements OnInit {
     )
   }
 
+  public searchCandidate(searchKey: string): void{
+    const foundCandidates: Candidate[] = [];
+    for(const candidate of this.candidates){
+      if(candidate.name.toLowerCase().indexOf(searchKey.toLowerCase()) !== -1){
+        foundCandidates.push(candidate)
+      }
+    }
+    this.candidates = foundCandidates
+    //ukoliko nema nista resetuj
+    if(foundCandidates.length === 0 || !searchKey){
+      this.getCandidates()
+    }
+  }
 
   public openModal(candidate: Candidate,mode: string): void{
     const btn = document.createElement('button')
